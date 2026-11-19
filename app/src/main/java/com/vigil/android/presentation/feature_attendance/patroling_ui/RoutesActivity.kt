@@ -61,10 +61,10 @@ class RoutesActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(
-            android.view.WindowManager.LayoutParams.FLAG_SECURE,
-            android.view.WindowManager.LayoutParams.FLAG_SECURE
-        )
+        // window.setFlags(
+        //     android.view.WindowManager.LayoutParams.FLAG_SECURE,
+        //     android.view.WindowManager.LayoutParams.FLAG_SECURE
+        // )
         setContentView(R.layout.activity_routes)
 
         prefs = Prefs(this)
@@ -100,7 +100,7 @@ class RoutesActivity : AppCompatActivity() {
             tab.text = when (position) {
                 0 -> getString(R.string.current_route)
                 1 -> getString(R.string.previous_route)
-                else -> "Face match"
+                else -> "Face Match"
             }
         }.attach()
 

@@ -22,7 +22,7 @@ class VerificationInboxActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
+        // window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
         if (!session.isSessionValid() || session.getRole() != "Patrol Officer") {
             startActivity(Intent(this, MainActivity::class.java))
             finish()

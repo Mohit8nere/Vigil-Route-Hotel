@@ -6,7 +6,7 @@
         <item name="cornerSize">50%</item>
     </style>
     <style name="VigilTabText">
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">13sp</item>
         <item name="android:textStyle">bold</item>
         <item name="textAllCaps">true</item>
     </style>
