@@ -1,0 +1,54 @@
+<resources>
+    <string name="app_name">Vigil</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="settings">Settings</string>
+
+    <!-- Preference Titles -->
+    <string name="camera">Camera</string>
+    <string name="thresholds">Thresholds</string>
+    <string name="reset">Reset</string>
+
+    <!-- Messages Preferences -->
+    <string name="camera_lens">Camera lens</string>
+    <string name="liveness_threshold">Liveness threshold</string>
+    <string name="liveness_level">Liveness Level</string>
+    <string name="identify_threshold">Identify threshold</string>
+    <string name="restore_default_settings">Restore default settings</string>
+    <string name="clear_all_person">Clear all person</string>
+
+    <string name="select_picture">Select Picture</string>
+
+    <string name="multiple_face_detected">Multiple face detected!</string>
+    <string name="no_face_detected">No face detected!</string>
+    <string name="person_enrolled">Person enrolled!</string>
+    <string name="liveness_check_failed">Liveness check failed!</string>
+    <string name="restored_default_settings">Restored default settings</string>
+    <string name="cleared_all_person">Cleared all person</string>
+    <string name="invalid_value">Invalid value</string>
+    <string name="are_you_sure_you_want_to_logout">Are you sure you want to logout?</string>
+    <string name="logout">Logout</string>
+    <string name="cancel">Cancel</string>
+    <string name="location_permission_required_for_patrol">Location permission required for patrol</string>
+    <string name="location_background_tracking_notice"><![CDATA[Location & Background Tracking Notice]]></string>
+    <string name="vigil_collects_precise_location_data_to_track_security_patrols_verify_checkpoints_and_record_attendance_even_when_the_app_is_running_in_the_background_or_closed_this_data_is_required_for_your_security_shift_operations">Vigil collects precise location data to track security patrols, verify checkpoints, and record attendance, even when the app is running in the background or closed. This data is required for your security shift operations.</string>
+    <string name="continue_string">Continue</string>
+    <string name="location_permission_is_required_for_patrol_tracking">Location permission is required for patrol tracking</string>
+    <string name="exit_app">Exit App</string>
+    <string name="are_you_sure_you_want_to_exit_the_app">Are you sure you want to exit the app?</string>
+    <string name="exit">Exit</string>
+    <string name="could_not_refresh_settings">Could not refresh settings</string>
+    <string name="data">data</string>
+    <string name="setting_value">setting_value</string>
+    <string name="this_application_requires_gps_to_be_enabled_for_patrolling_please_turn_it_on_to_continue">This application requires GPS to be enabled for patrolling. Please turn it on to continue.</string>
+    <string name="gps_required">GPS Required</string>
+    <string name="turn_on">Turn On</string>
+    <string name="current_route">Current Route</string>
+    <string name="previous_route">Previous Route</string>
+    <string name="search_by_name_or_badge_id">Search By Name Or Badge ID</string>
+    <string name="ascending">Ascending</string>
+    <string name="descending">Descending</string>
+    <string name="route_summary_final_remark">Route Summary / Final Remark *</string>
+    <string name="voice_to_text">Voice to text</string>
+    <string name="enter_mandatory_route_summary_remark">Enter mandatory route summary remark...</string>
+
+</resources>

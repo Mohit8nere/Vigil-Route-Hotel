@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="18dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:orientation="vertical"
+        android:padding="18dp">
+
+        <TextView
+            android:id="@+id/tvStopName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Stop Name"
+            android:textColor="#0D58B8"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvOfficerName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Officer:"
+            android:textColor="#374151"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tvRouteTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Route Time:"
+            android:textColor="#374151"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tvReachedTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Reached Time:"
+            android:textColor="#374151"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tvUploadTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Upload Time:"
+            android:textColor="#374151"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tvExitTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Exit Time:"
+            android:textColor="#374151"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tvLatLng"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Location:"
+            android:textColor="#374151"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/imgStop"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_marginTop="14dp"
+            android:background="#F3F4F6"
+            android:scaleType="centerCrop"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/btnClose"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="18dp"
+            android:background="#0D58B8"
+            android:gravity="center"
+            android:text="Close"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</ScrollView>

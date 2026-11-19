@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="#F3FFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="24dp">
+
+        <!-- App Logo / Shield -->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:scaleType="fitXY"
+            android:background="@drawable/app_logo"
+            android:layout_marginTop="70dp" />
+
+        <!-- App Name -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VIGIL"
+            android:textColor="#063B7A"
+            android:textSize="42sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:letterSpacing="0.18"
+            android:layout_marginTop="24dp" />
+
+        <!-- Tagline -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PATROLLING • PROTECTING • SECURING"
+            android:textColor="#1D6AB3"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.12"
+            android:layout_marginTop="48dp" />
+
+        <Button
+            android:id="@+id/btnRoutes"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:text="📍  ROUTES     ›"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="80dp"
+            android:background="@drawable/bg_routes_button"
+            android:elevation="8dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="38dp" />
+
+        <!-- User Detail Button -->
+        <Button
+            android:id="@+id/btnUserDetail"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:text="👤  USER DETAIL     ›"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/bg_user_button"
+            android:elevation="8dp"
+            android:layout_marginHorizontal="20dp" />
+
+        <!-- TEMPORARY: View Logs button — remove when logger is removed -->
+        <Button
+            android:id="@+id/btnViewLogs"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="📋  VIEW LOGS"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:visibility="gone"
+            android:background="#333333"
+            android:elevation="4dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="16dp" />
+
+    </LinearLayout>
+
+</ScrollView>

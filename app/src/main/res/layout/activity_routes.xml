@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@drawable/bg_screen">
+
+    <!-- APP TITLE -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:gravity="center"
+        android:text="VIGIL"
+        android:textColor="#0D47A1"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:letterSpacing="0.12" />
+
+    <!-- TAB BAR -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:background="@drawable/bg_circle_button"
+            android:src="@android:drawable/ic_media_previous"
+            android:tint="#0D47A1"
+            android:contentDescription="Back" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            app:tabGravity="fill"
+            app:tabMode="scrollable"
+            app:tabIndicatorColor="#0D47A1"
+            app:tabIndicatorHeight="4dp"
+            app:tabSelectedTextColor="#0D47A1"
+            app:tabTextColor="#6B7280"
+            app:tabTextAppearance="@style/VigilTabText" />
+
+        <ImageButton
+            android:id="@+id/btnRefresh"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:background="@drawable/bg_circle_button"
+            android:src="@android:drawable/ic_popup_sync"
+            android:tint="#0D47A1"
+            android:contentDescription="Refresh" />
+
+        <ImageButton
+            android:id="@+id/btnLogout"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_circle_button"
+            android:src="@android:drawable/ic_lock_power_off"
+            android:tint="#D32F2F"
+            android:contentDescription="Logout" />
+
+    </LinearLayout>
+
+    <!-- LIGHT DIVIDER -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#D6E6F7" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>
