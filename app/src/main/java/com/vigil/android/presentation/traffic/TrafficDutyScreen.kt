@@ -23,13 +23,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -374,34 +377,13 @@ fun TrafficDutyScreen() {
         }
 
         item {
-            val cardBackgroundBrush = Brush.verticalGradient(
-                colors = listOf(
-                    androidx.compose.ui.graphics.Color(0xFFEAF5F0),
-                    androidx.compose.ui.graphics.Color(0xFFF7FBF9)
-                )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                "Control room alerts",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
             )
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(cardBackgroundBrush, RoundedCornerShape(16.dp)),
-                elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
-                colors = CardDefaults.cardColors(containerColor = androidx.compose.ui.graphics.Color.Transparent),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)),
-                shape = RoundedCornerShape(16.dp)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                ) {
-                    Text(
-                        "Control room alerts",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                }
-            }
         }
 
         if (loaded && alerts.isEmpty()) item {
