@@ -68,8 +68,10 @@ internal class VerificationStore(rawContext: Context) : AutoCloseable {
 
     private val scopeId = MessageDigest.getInstance("SHA-256")
         .digest("${ApiNames.BASE_URL}|$owner".toByteArray()).joinToString("") { "%02x".format(it) }
-    private val http = OkHttpClient.Builder().followRedirects(false).followSslRedirects(false)
-        .addInterceptor(SessionInterceptor(session))
+    private val http = com.vigil.android.core.common.network.NetworkClient.applyVaptSslBypass(
+        OkHttpClient.Builder().followRedirects(false).followSslRedirects(false)
+            .addInterceptor(SessionInterceptor(session))
+    )
         .addNetworkInterceptor { chain ->
             checkOwner()
             val sent = chain.request().header("Authorization")
