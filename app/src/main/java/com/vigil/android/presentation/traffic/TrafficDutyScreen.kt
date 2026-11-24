@@ -408,18 +408,26 @@ fun TrafficDutyScreen() {
             }
         }
         items(alerts, key = { "alert-${it.id}" }) { alert ->
+            val cardBackgroundBrush = Brush.verticalGradient(
+                colors = listOf(
+                    androidx.compose.ui.graphics.Color(0xFFEAF5F0),
+                    androidx.compose.ui.graphics.Color(0xFFF7FBF9)
+                )
+            )
             Card(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(cardBackgroundBrush, RoundedCornerShape(16.dp)),
                 elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFFAFAFA)),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
-                shape = RoundedCornerShape(12.dp)
+                colors = CardDefaults.cardColors(containerColor = androidx.compose.ui.graphics.Color.Transparent),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)),
+                shape = RoundedCornerShape(16.dp)
             ) {
                 Column(
                     Modifier
                         .fillMaxWidth()
-                        .padding(14.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     Text(
                         alert.title,
