@@ -359,7 +359,7 @@ fun VerificationScreen() {
             val precise = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
             permissionHelp = !precise
             message =
-                if (precise) "Precise location is available. Confirm after reviewing the candidate."
+                if (precise) "Precise location is available. Confirm after reviewing the Suspect."
                 else "Enable precise location in app permissions to record the verification site."
         }
     fun openCamera() {
@@ -574,7 +574,7 @@ fun VerificationScreen() {
                             } else {
                                 Brush.verticalGradient(
                                     colors = listOf(
-                                        Color(0xFFEAF5F0), // lightest greeny tint top
+                                        Color(0xFF029202).copy(alpha = 0.37f), // lightest greeny tint top
                                         Color(0xFFF7FBF9)  // soft light green bottom
                                     )
                                 )
@@ -1098,7 +1098,7 @@ fun VerificationScreen() {
                                     candidate = null
                                     camera = true // keep camera open
                                     message =
-                                        "No clear candidate in the saved references. Please try again."
+                                        "No clear Suspect in the saved references. Please try again."
                                 } else {
                                     candidate = matched
                                     camera = false
@@ -1124,7 +1124,7 @@ fun VerificationScreen() {
             Card(modifier = Modifier.fillMaxWidth()) {
                 Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text(
-                        "Suggested candidate",
+                        "Suggested Suspect",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -1204,7 +1204,7 @@ fun VerificationScreen() {
                     TextButton(
                         enabled = !interactionBlocked,
                         onClick = {
-                            candidate = null; message = "Candidate dismissed."
+                            candidate = null; message = "Suspect dismissed."
                         },
                         modifier = Modifier.fillMaxWidth()
                     ) { Text("Leave pending") }
