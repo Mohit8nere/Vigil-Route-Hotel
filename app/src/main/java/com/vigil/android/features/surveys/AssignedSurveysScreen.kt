@@ -8,16 +8,23 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -38,6 +45,7 @@ private fun errorText(e: Exception): String {
     return e.localizedMessage ?: "Could not complete the request. Please retry."
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AssignedSurveysScreen(onBack: (() -> Unit)? = null, model: FieldOperations = hiltViewModel()) {
     var page by rememberSaveable { mutableIntStateOf(1) }
@@ -65,36 +73,71 @@ fun AssignedSurveysScreen(onBack: (() -> Unit)? = null, model: FieldOperations =
         }
         return
     }
-    Column(Modifier.fillMaxSize().safeDrawingPadding().padding(horizontal = 16.dp)) {
-        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            if (onBack != null) TextButton(onClick = onBack) { Text("Back") }
-            Text("Assigned surveys", Modifier.weight(1f), style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold)
-            TextButton(onClick = { refresh++ }, enabled = !busy) { Text("Refresh") }
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Assigned surveys", fontWeight = FontWeight.SemiBold) },
+                navigationIcon = {
+                    if (onBack != null) {
+                        IconButton(onClick = onBack) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    }
+                },
+                actions = {
+                    TextButton(onClick = { refresh++ }, enabled = !busy) {
+                        Text("Refresh", color = MaterialTheme.colorScheme.onPrimary)
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary
+                )
+            )
         }
-        if (notice.isNotEmpty()) Text(notice, color = MaterialTheme.colorScheme.primary)
-        when {
-            busy -> LinearProgressIndicator(Modifier.fillMaxWidth())
-            error.isNotEmpty() -> Text(error, color = MaterialTheme.colorScheme.error)
-            result.surveys.isEmpty() -> Text("No surveys assigned.", Modifier.padding(vertical = 20.dp))
-            else -> LazyColumn(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(10.dp),
-                contentPadding = PaddingValues(vertical = 12.dp)) {
-                items(result.surveys, key = { it.id }) { row ->
-                    Card(onClick = { selected = row.id; notice = "" }, modifier = Modifier.fillMaxWidth()) {
-                        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                            Text(row.title, style = MaterialTheme.typography.titleMedium)
-                            Text(row.location)
-                            Text(row.status.replaceFirstChar { it.uppercase() }, color = MaterialTheme.colorScheme.primary)
+    ) { pad ->
+        Column(Modifier.fillMaxSize().padding(pad).padding(16.dp)) {
+            if (notice.isNotEmpty()) Text(notice, color = MaterialTheme.colorScheme.primary)
+            when {
+                busy -> LinearProgressIndicator(Modifier.fillMaxWidth())
+                error.isNotEmpty() -> Text(error, color = MaterialTheme.colorScheme.error)
+                result.surveys.isEmpty() -> Text("No surveys assigned.", Modifier.padding(vertical = 20.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                else -> LazyColumn(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(10.dp),
+                    contentPadding = PaddingValues(vertical = 12.dp)) {
+                    items(result.surveys, key = { it.id }) { row ->
+                        val cardBackgroundBrush = Brush.verticalGradient(
+                            colors = listOf(
+                                Color(0xFFEAF5F0), // lightest greeny tint top
+                                Color(0xFFF7FBF9)  // soft light green bottom
+                            )
+                        )
+                        Card(
+                            onClick = { selected = row.id; notice = "" },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(cardBackgroundBrush, RoundedCornerShape(16.dp)),
+                            shape = RoundedCornerShape(16.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color.Transparent),
+                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+                        ) {
+                            Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                                Text(row.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                                Text(row.location, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                Text(row.status.replaceFirstChar { it.uppercase() }, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Medium)
+                            }
                         }
                     }
                 }
             }
-        }
-        if (!busy && (page > 1 || result.hasNext)) {
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                TextButton(onClick = { page-- }, enabled = page > 1) { Text("Previous") }
-                Text("Page $page", Modifier.align(Alignment.CenterVertically))
-                TextButton(onClick = { page++ }, enabled = result.hasNext) { Text("Next") }
+            if (!busy && (page > 1 || result.hasNext)) {
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    TextButton(onClick = { page-- }, enabled = page > 1) { Text("Previous") }
+                    Text("Page $page", Modifier.align(Alignment.CenterVertically))
+                    TextButton(onClick = { page++ }, enabled = result.hasNext) { Text("Next") }
+                }
             }
         }
     }
