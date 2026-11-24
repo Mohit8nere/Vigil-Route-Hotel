@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -93,11 +95,26 @@ class VipDutyActivity : ComponentActivity() {
                         }
                     }
                 }
-                Surface(modifier=Modifier.fillMaxSize()) {
-                    LazyColumn(modifier=Modifier.systemBarsPadding().padding(18.dp), verticalArrangement=Arrangement.spacedBy(12.dp)) {
+                @OptIn(ExperimentalMaterial3Api::class)
+                Scaffold(
+                    topBar = {
+                        TopAppBar(
+                            title = { Text("VIP duty", fontWeight = FontWeight.SemiBold) },
+                            navigationIcon = {
+                                IconButton(onClick = { finish() }) {
+                                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                                }
+                            },
+                            colors = TopAppBarDefaults.topAppBarColors(
+                                containerColor = MaterialTheme.colorScheme.primary,
+                                titleContentColor = Color.White,
+                                navigationIconContentColor = Color.White
+                            )
+                        )
+                    }
+                ) { pad ->
+                    LazyColumn(modifier=Modifier.padding(pad).padding(18.dp), verticalArrangement=Arrangement.spacedBy(12.dp)) {
                         item {
-                            Text("VIP duty", style=MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
-                            Spacer(Modifier.height(4.dp))
                             Text("Assigned posts and duty location sharing", style=MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                         if (problem.isNotBlank()) {
