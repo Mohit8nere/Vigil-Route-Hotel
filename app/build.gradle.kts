@@ -19,7 +19,7 @@ android {
     compileSdk = 37
 
     defaultConfig {
-        val apiBase = localProperties.getProperty("vigil.baseUrl", "http://vigil.ai.in/").trimEnd('/') + "/"
+        val apiBase = localProperties.getProperty("vigil.baseUrl", "https://vigil.ai.in/").trimEnd('/') + "/"
         require(apiBase.matches(Regex("""https?://[A-Za-z0-9.:-]+/"""))) { "Use an HTTP(S) base URL without a path." }
         buildConfigField("String", "API_BASE_URL", "\"" + apiBase + "\"")
         applicationId = "com.vigil.android"
