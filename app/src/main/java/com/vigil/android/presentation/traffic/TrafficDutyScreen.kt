@@ -18,6 +18,7 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,6 +28,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -275,12 +277,20 @@ fun TrafficDutyScreen() {
             val tracking = local && TrafficDutyService.trackingOwner == owner &&
                     TrafficDutyService.trackingDuty == duty.id
             val isOn = local || (duty.active && !waitingStop)
+            val cardBackgroundBrush = Brush.verticalGradient(
+                colors = listOf(
+                    androidx.compose.ui.graphics.Color(0xFFEAF5F0), // lightest greeny tint top
+                    androidx.compose.ui.graphics.Color(0xFFF7FBF9)  // soft light green bottom
+                )
+            )
             Card(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(cardBackgroundBrush, RoundedCornerShape(16.dp)),
                 elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFFAFAFA)),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
-                shape = RoundedCornerShape(12.dp)
+                colors = CardDefaults.cardColors(containerColor = androidx.compose.ui.graphics.Color.Transparent),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)),
+                shape = RoundedCornerShape(16.dp)
             ) {
                 Column(
                     Modifier

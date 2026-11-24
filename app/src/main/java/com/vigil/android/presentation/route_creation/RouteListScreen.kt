@@ -2,10 +2,13 @@ package com.vigil.android.presentation.route_creation
 
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
@@ -150,11 +153,20 @@ fun RouteListScreen(
 
 @Composable
 fun RouteCard(route: PatrolRoute, onEdit: () -> Unit, onDetails: () -> Unit) {
+    val cardBackgroundBrush = Brush.verticalGradient(
+        colors = listOf(
+            Color(0xFFEAF5F0), // lightest greeny tint top
+            Color(0xFFF7FBF9)  // soft light green bottom
+        )
+    )
     Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(cardBackgroundBrush, RoundedCornerShape(16.dp)),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = androidx.compose.ui.graphics.Color.White),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
-        elevation = CardDefaults.cardElevation(2.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
     ) {
         Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {

@@ -8,13 +8,18 @@ import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
@@ -83,7 +88,21 @@ fun VolunteerDutyScreen(onLogout: () -> Unit) {
         if (!loading && duties.isEmpty() && message.isBlank()) Text("No current or upcoming duties.")
         LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             items(duties, key = { it.id }) { d ->
-                Card(Modifier.fillMaxWidth()) {
+                val cardBackgroundBrush = Brush.verticalGradient(
+                    colors = listOf(
+                        Color(0xFFEAF5F0), // lightest greeny tint top
+                        Color(0xFFF7FBF9)  // soft light green bottom
+                    )
+                )
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(cardBackgroundBrush, RoundedCornerShape(16.dp)),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.Transparent),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+                ) {
                     Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                         Text(d.label, style = MaterialTheme.typography.titleMedium)
                         Text(d.station)
