@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_screen">
+
+    <ListView
+        android:id="@+id/listStops"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="12dp"
+        android:clipToPadding="false"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="8dp" />
+
+    <!-- Empty View -->
+    <LinearLayout
+        android:id="@+id/emptyRouteLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="28dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="170dp"
+            android:layout_height="170dp"
+            android:gravity="center"
+            android:text="🗺️"
+            android:textSize="90sp"
+            android:background="@drawable/bg_empty_circle"
+            android:layout_marginBottom="28dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No routes available"
+            android:textColor="#0D47A1"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="12dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="There are no routes assigned to you at the moment."
+            android:textColor="#6B7280"
+            android:textSize="15sp"
+            android:gravity="center" />
+
+    </LinearLayout>
+
+</FrameLayout>
