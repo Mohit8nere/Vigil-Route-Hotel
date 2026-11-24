@@ -33,8 +33,8 @@ android {
 
     signingConfigs {
         create("release") {
-            val storeFilePath = localProperties.getProperty("signing.storeFilePath") ?: "app/vigil-release.jks"
-            val keystoreFile = file(storeFilePath).takeIf { it.exists() }
+            val keystoreFile = localProperties.getProperty("signing.storeFilePath")?.let { file(it) }
+                ?: rootProject.file("app/vigil-release.jks").takeIf { it.exists() }
             if (keystoreFile != null) {
                 storeFile = keystoreFile
                 storePassword = localProperties.getProperty("signing.storePassword") ?: "vigil_password"
