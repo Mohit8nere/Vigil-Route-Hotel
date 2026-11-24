@@ -20,6 +20,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -232,8 +233,7 @@ fun TrafficDutyScreen() {
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         item {
-            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Text("Traffic duty", Modifier.weight(1f), style = MaterialTheme.typography.headlineSmall)
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.CenterVertically) {
                 TextButton(onClick = { update++ }, enabled = !synchronizing && !busy) { Text("Refresh") }
             }
             if (!loaded && synchronizing) LinearProgressIndicator(Modifier.fillMaxWidth())
@@ -271,7 +271,27 @@ fun TrafficDutyScreen() {
                 Text("Stop current duty")
             }
         }
-        if (loaded && duties.isEmpty()) item { Text("No traffic duty has been assigned.") }
+        if (loaded && duties.isEmpty()) item {
+            val cardBackgroundBrush = Brush.verticalGradient(
+                colors = listOf(
+                    androidx.compose.ui.graphics.Color(0xFFEAF5F0),
+                    androidx.compose.ui.graphics.Color(0xFFF7FBF9)
+                )
+            )
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(cardBackgroundBrush, RoundedCornerShape(16.dp)),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = androidx.compose.ui.graphics.Color.Transparent),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)),
+                elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+            ) {
+                Box(modifier = Modifier.fillMaxWidth().padding(20.dp), contentAlignment = androidx.compose.ui.Alignment.Center) {
+                    Text("No traffic duty has been assigned.", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+            }
+        }
         items(duties, key = { "duty-${it.id}" }) { duty ->
             val local = localId == duty.id
             val tracking = local && TrafficDutyService.trackingOwner == owner &&
@@ -354,33 +374,56 @@ fun TrafficDutyScreen() {
         }
 
         item {
+            val cardBackgroundBrush = Brush.verticalGradient(
+                colors = listOf(
+                    androidx.compose.ui.graphics.Color(0xFFEAF5F0),
+                    androidx.compose.ui.graphics.Color(0xFFF7FBF9)
+                )
+            )
             Card(
-                modifier = Modifier.fillMaxWidth(),
-                elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFFAFAFA)),
-                border = BorderStroke(1.dp, alertCardBorderColor),
-                shape = RoundedCornerShape(12.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(cardBackgroundBrush, RoundedCornerShape(16.dp)),
+                elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+                colors = CardDefaults.cardColors(containerColor = androidx.compose.ui.graphics.Color.Transparent),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)),
+                shape = RoundedCornerShape(16.dp)
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(14.dp)
+                        .padding(16.dp)
                 ) {
                     Text(
                         "Control room alerts",
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = Bold,
-                        color = MaterialTheme.colorScheme.onSurface
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
             }
         }
 
         if (loaded && alerts.isEmpty()) item {
-            Text(
-                "No traffic alerts.",
-                style = MaterialTheme.typography.bodyMedium
+            val cardBackgroundBrush = Brush.verticalGradient(
+                colors = listOf(
+                    androidx.compose.ui.graphics.Color(0xFFEAF5F0),
+                    androidx.compose.ui.graphics.Color(0xFFF7FBF9)
+                )
             )
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(cardBackgroundBrush, RoundedCornerShape(16.dp)),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = androidx.compose.ui.graphics.Color.Transparent),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)),
+                elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+            ) {
+                Box(modifier = Modifier.fillMaxWidth().padding(20.dp), contentAlignment = androidx.compose.ui.Alignment.Center) {
+                    Text("No traffic alerts.", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+            }
         }
         items(alerts, key = { "alert-${it.id}" }) { alert ->
             Card(
