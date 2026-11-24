@@ -24,6 +24,8 @@ import androidx.camera.core.ImageProxy
 import androidx.camera.view.CameraController
 import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -562,9 +564,26 @@ fun VerificationScreen() {
                                 ?: "Due: ${assignment.optString("due_date", "")}"
                             val thumbnailBitmap = bitmap
 
+                            val cardBackgroundBrush = if (isSelected) {
+                                Brush.verticalGradient(
+                                    colors = listOf(
+                                        MaterialTheme.colorScheme.primary.copy(alpha = 0.25f),
+                                        MaterialTheme.colorScheme.primary.copy(alpha = 0.10f)
+                                    )
+                                )
+                            } else {
+                                Brush.verticalGradient(
+                                    colors = listOf(
+                                        Color(0xFFEAF5F0), // lightest greeny tint top
+                                        Color(0xFFF7FBF9)  // soft light green bottom
+                                    )
+                                )
+                            }
+
                             Card(
                                 modifier = Modifier
                                     .width(160.dp)
+                                    .background(cardBackgroundBrush, RoundedCornerShape(16.dp))
                                     .clickable(enabled = !interactionBlocked && profileUsable) {
                                         clearScan()
                                         target = id
@@ -573,7 +592,7 @@ fun VerificationScreen() {
                                         openCamera()
                                     },
                                 colors = CardDefaults.cardColors(
-                                    containerColor = if (isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant
+                                    containerColor = Color.Transparent
                                 ),
                                 border = if (isSelected) BorderStroke(
                                     2.dp,
