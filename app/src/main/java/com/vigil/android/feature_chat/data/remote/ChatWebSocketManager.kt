@@ -12,9 +12,7 @@ import javax.inject.Singleton
 
 @Singleton
 class ChatWebSocketManager @Inject constructor(private val api: ChatApiService) {
-    private val client = com.vigil.android.core.common.network.NetworkClient.applyVaptSslBypass(
-        OkHttpClient.Builder().pingInterval(30, TimeUnit.SECONDS)
-    ).build()
+    private val client = OkHttpClient.Builder().pingInterval(30, TimeUnit.SECONDS).build()
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private var job: Job? = null
 

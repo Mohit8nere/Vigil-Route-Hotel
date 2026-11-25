@@ -56,8 +56,8 @@ object NetworkClient {
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
 
-        // VAPT TEMPORARY: Bypass SSL/TLS Verification
-        applyVaptSslBypass(builder)
+        // VAPT TEMPORARY: Bypass SSL/TLS Verification (DISABLED FOR PRODUCTION)
+        // applyVaptSslBypass(builder)
 
         return builder.build()
     }

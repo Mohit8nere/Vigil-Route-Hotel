@@ -10,6 +10,9 @@ class VigilApp : Application(), androidx.work.Configuration.Provider {
 
     override fun onCreate() {
         super.onCreate()
+        // Execute security checks against reverse engineering, root, hooking, and debugging
+        com.vigil.android.utils.SecurityUtils.isEnvironmentCompromised(this)
+
         // The worker handles background catch-up. A single socket serves all foreground activities.
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
             var started = 0
