@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -103,6 +104,7 @@ internal fun prepareChallanPhoto(context: Context, capture: File, directory: Fil
 internal fun CameraButton(
     label: String, directory: File, enabled: Boolean,
     modifier: Modifier = Modifier,
+    colors: ButtonColors = ButtonDefaults.buttonColors(),
     onError: (String) -> Unit, onTaken: (File) -> Unit
 ) {
     val context = LocalContext.current
@@ -137,12 +139,7 @@ internal fun CameraButton(
         },
         enabled = enabled,
         modifier = modifier,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = androidx.compose.ui.graphics.Color.Transparent,
-            contentColor = androidx.compose.ui.graphics.Color.White,
-            disabledContainerColor = androidx.compose.ui.graphics.Color.Transparent,
-            disabledContentColor = androidx.compose.ui.graphics.Color.White.copy(alpha = 0.6f)
-        )
+        colors = colors
     ) {
         Icon(
             painter = painterResource(id = R.drawable.camera_a),

@@ -347,6 +347,12 @@ private fun SurveyVisit(survey: AssignedSurvey, model: FieldOperations, onBack: 
                         directory = model.drafts,
                         enabled = cameraEnabled,
                         modifier = Modifier.fillMaxSize(),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Transparent,
+                            contentColor = Color.White,
+                            disabledContainerColor = Color.Transparent,
+                            disabledContentColor = Color.White.copy(alpha = 0.7f)
+                        ),
                         onError = { error = it },
                         onTaken = { attach(listOf(Uri.fromFile(it)), it) }
                     )
