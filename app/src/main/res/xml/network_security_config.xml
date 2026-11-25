@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <!-- VAPT TEMPORARY: Allow cleartext traffic & user certificates for proxy tools (Burp/ZAP) -->
-    <base-config cleartextTrafficPermitted="true">
+    <base-config cleartextTrafficPermitted="false">
         <trust-anchors>
             <certificates src="system" />
             <certificates src="user" />
         </trust-anchors>
-    </base-config>
+aza
+    '8</base-config>
 
     <debug-overrides>
         <trust-anchors>

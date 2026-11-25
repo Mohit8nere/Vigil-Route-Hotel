@@ -514,7 +514,6 @@ fun VerificationScreen() {
 
         when (selectedTab) {
             0 -> {
-                // Face Verification Records Tab
                 Text(
                     "Select an assigned person to review their reference and scan.",
                     style = MaterialTheme.typography.bodyMedium,
