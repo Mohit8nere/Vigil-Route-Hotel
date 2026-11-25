@@ -18,6 +18,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.AddPhotoAlternate
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -143,6 +145,11 @@ fun AssignedSurveysScreen(onBack: (() -> Unit)? = null, model: FieldOperations =
     }
 }
 
+private fun String.toTitleCase(): String = this.split(" ")
+    .filter { it.isNotBlank() }
+    .joinToString(" ") { word -> word.replaceFirstChar { if (it.isLowerCase()) it.titlecase(java.util.Locale.ROOT) else it.toString() } }
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SurveyVisit(survey: AssignedSurvey, model: FieldOperations, onBack: () -> Unit, onComplete: () -> Unit) {
     val context = LocalContext.current
@@ -202,57 +209,147 @@ private fun SurveyVisit(survey: AssignedSurvey, model: FieldOperations, onBack: 
         onBack()
     }
     BackHandler { back() }
-    Column(Modifier.fillMaxSize().safeDrawingPadding().verticalScroll(rememberScrollState()).padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        TextButton(onClick = { back() }, enabled = !busy) { Text("Back to surveys") }
-        Text(survey.title, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
-        Card(Modifier.fillMaxWidth()) {
-            Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                Text(survey.location, style = MaterialTheme.typography.titleMedium)
-                Text("${survey.latitude}, ${survey.longitude}  ·  ${survey.radius} m radius")
-                if (survey.instructions.isNotBlank()) Text(survey.instructions)
-            }
+
+    val formattedTitle = remember(survey.title) { survey.title.toTitleCase() }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(formattedTitle, fontWeight = FontWeight.Bold) },
+                navigationIcon = {
+                    IconButton(onClick = { back() }, enabled = !busy) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                )
+            )
         }
-        if (completed) {
-            Text("Completed", color = MaterialTheme.colorScheme.primary)
-            if (survey.description.isNotBlank()) Text(survey.description)
-            return@Column
-        }
-        OutlinedTextField(value = notes, onValueChange = { if (it.length <= 5000) notes = it },
-            label = { Text("Survey description") }, minLines = 3, enabled = !busy, modifier = Modifier.fillMaxWidth())
-        OutlinedButton(onClick = {
-            if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) verify()
-            else permissions.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))
-        }, enabled = !busy) { Text(if (confirmedAt == 0L) "Confirm arrival using GPS" else "Recheck location") }
-        AnimatedVisibility(visible = confirmedAt != 0L) {
-            Text("Location confirmed. Photos can now be attached.", color = MaterialTheme.colorScheme.primary)
-        }
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            CameraButton("Take photo", model.drafts, !busy && photos.size < 6 && confirmedAt != 0L,
-                onError = { error = it }, onTaken = { attach(listOf(Uri.fromFile(it)), it) })
-            OutlinedButton(onClick = { picker.launch("image/*") },
-                enabled = !busy && photos.size < 6 && confirmedAt != 0L) { Text("Select photos") }
-        }
-        photos.forEachIndexed { index, path ->
-            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Text("Photo ${index + 1}  ·  ${(File(path).length() + 1023) / 1024} KB", Modifier.weight(1f))
-                TextButton(enabled = !busy, onClick = { photos = ArrayList(photos - path); File(path).delete() }) { Text("Remove") }
-            }
-        }
-        if (error.isNotBlank()) Text(error, color = MaterialTheme.colorScheme.error)
-        if (busy) LinearProgressIndicator(Modifier.fillMaxWidth())
-        Button(enabled = confirmedAt != 0L && !busy && (notes.isNotBlank() || photos.isNotEmpty()),
-            modifier = Modifier.fillMaxWidth(), onClick = {
-                scope.launch {
-                    busy = true; error = ""
-                    try {
-                        model.submit(survey, surveyFix(context), notes.trim(), photos.map(::File))
-                        photos.forEach { File(it).delete() }
-                        photos = arrayListOf()
-                        onComplete()
-                    } catch (e: Exception) { error = errorText(e); confirmedAt = 0 }
-                    finally { busy = false }
+    ) { pad ->
+        Column(
+            Modifier
+                .fillMaxSize()
+                .padding(pad)
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp)
+        ) {
+            val cardBackgroundBrush = Brush.verticalGradient(
+                colors = listOf(
+                    Color(0xFFEAF5F0), // lightest greeny tint top
+                    Color(0xFFF7FBF9)  // soft light green bottom
+                )
+            )
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(cardBackgroundBrush, RoundedCornerShape(16.dp)),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.Transparent),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)),
+                elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+            ) {
+                Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    Text(survey.location.toTitleCase(), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                    Text("${survey.latitude}, ${survey.longitude}  ·  ${survey.radius} m radius", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    if (survey.instructions.isNotBlank()) Text(survey.instructions, style = MaterialTheme.typography.bodyMedium)
                 }
-            }) { Text("Submit survey") }
+            }
+
+            if (completed) {
+                Text("Completed", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
+                if (survey.description.isNotBlank()) Text(survey.description, style = MaterialTheme.typography.bodyMedium)
+                return@Column
+            }
+
+            OutlinedTextField(
+                value = notes,
+                onValueChange = { if (it.length <= 5000) notes = it },
+                label = { Text("Survey description") },
+                minLines = 3,
+                enabled = !busy,
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp)
+            )
+
+            OutlinedButton(
+                onClick = {
+                    if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) verify()
+                    else permissions.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))
+                },
+                enabled = !busy,
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Icon(Icons.Default.LocationOn, contentDescription = null, modifier = Modifier.size(18.dp))
+                Spacer(Modifier.width(8.dp))
+                Text(if (confirmedAt == 0L) "Confirm arrival using GPS" else "Recheck location", fontWeight = FontWeight.Medium)
+            }
+
+            AnimatedVisibility(visible = confirmedAt != 0L) {
+                Text("Location confirmed. Photos can now be attached.", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                CameraButton(
+                    label = "Take photo",
+                    directory = model.drafts,
+                    enabled = !busy && photos.size < 6 && confirmedAt != 0L,
+                    modifier = Modifier.weight(1f),
+                    onError = { error = it },
+                    onTaken = { attach(listOf(Uri.fromFile(it)), it) }
+                )
+                OutlinedButton(
+                    onClick = { picker.launch("image/*") },
+                    enabled = !busy && photos.size < 6 && confirmedAt != 0L,
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Icon(Icons.Default.AddPhotoAlternate, contentDescription = null, modifier = Modifier.size(18.dp))
+                    Spacer(Modifier.width(6.dp))
+                    Text("Select photos")
+                }
+            }
+
+            photos.forEachIndexed { index, path ->
+                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                    Text("Photo ${index + 1}  ·  ${(File(path).length() + 1023) / 1024} KB", Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium)
+                    TextButton(enabled = !busy, onClick = { photos = ArrayList(photos - path); File(path).delete() }) { Text("Remove", color = MaterialTheme.colorScheme.error) }
+                }
+            }
+
+            if (error.isNotBlank()) Text(error, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)
+            if (busy) LinearProgressIndicator(Modifier.fillMaxWidth())
+
+            Button(
+                enabled = confirmedAt != 0L && !busy && (notes.isNotBlank() || photos.isNotEmpty()),
+                modifier = Modifier.fillMaxWidth().height(48.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
+                ),
+                onClick = {
+                    scope.launch {
+                        busy = true; error = ""
+                        try {
+                            model.submit(survey, surveyFix(context), notes.trim(), photos.map(::File))
+                            photos.forEach { File(it).delete() }
+                            photos = arrayListOf()
+                            onComplete()
+                        } catch (e: Exception) { error = errorText(e); confirmedAt = 0 }
+                        finally { busy = false }
+                    }
+                }
+            ) {
+                Text("Submit survey", fontWeight = FontWeight.Bold)
+            }
+        }
     }
 }
