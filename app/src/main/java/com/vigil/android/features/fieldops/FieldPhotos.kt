@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -135,7 +136,13 @@ internal fun CameraButton(
             else permission.launch(Manifest.permission.CAMERA)
         },
         enabled = enabled,
-        modifier = modifier
+        modifier = modifier,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = androidx.compose.ui.graphics.Color.Transparent,
+            contentColor = androidx.compose.ui.graphics.Color.White,
+            disabledContainerColor = androidx.compose.ui.graphics.Color.Transparent,
+            disabledContentColor = androidx.compose.ui.graphics.Color.White.copy(alpha = 0.6f)
+        )
     ) {
         Icon(
             painter = painterResource(id = R.drawable.camera_a),

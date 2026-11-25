@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.AddPhotoAlternate
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.*
@@ -25,11 +26,13 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.vigil.android.features.fieldops.CameraButton
@@ -125,10 +128,26 @@ fun AssignedSurveysScreen(onBack: (() -> Unit)? = null, model: FieldOperations =
                             border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)),
                             elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
                         ) {
-                            Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                                Text(row.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                                Text(row.location, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                                Text(row.status.replaceFirstChar { it.uppercase() }, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Medium)
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                                    Text(row.title.toTitleCase(), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                                    Text(row.location.toTitleCase(), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                    Text(row.status.replaceFirstChar { it.uppercase() }, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Medium)
+                                }
+                                FilledTonalButton(
+                                    onClick = { selected = row.id; notice = "" },
+                                    shape = RoundedCornerShape(12.dp)
+                                ) {
+                                    Text("Open")
+                                    Spacer(Modifier.width(4.dp))
+                                    Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = null, modifier = Modifier.size(16.dp))
+                                }
                             }
                         }
                     }
@@ -265,6 +284,13 @@ private fun SurveyVisit(survey: AssignedSurvey, model: FieldOperations, onBack: 
                 return@Column
             }
 
+            val buttonGradientBrush = Brush.horizontalGradient(
+                colors = listOf(
+                    Color(0xFF00897B), // Teal Primary
+                    Color(0xFF004D40)  // Dark Teal
+                )
+            )
+
             OutlinedTextField(
                 value = notes,
                 onValueChange = { if (it.length <= 5000) notes = it },
@@ -281,12 +307,20 @@ private fun SurveyVisit(survey: AssignedSurvey, model: FieldOperations, onBack: 
                     else permissions.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))
                 },
                 enabled = !busy,
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp)
+                modifier = Modifier.fillMaxWidth().height(48.dp),
+                shape = RoundedCornerShape(12.dp),
+                border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.primary),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = MaterialTheme.colorScheme.primary
+                )
             ) {
-                Icon(Icons.Default.LocationOn, contentDescription = null, modifier = Modifier.size(18.dp))
+                Icon(Icons.Default.LocationOn, contentDescription = null, modifier = Modifier.size(18.dp), tint = MaterialTheme.colorScheme.primary)
                 Spacer(Modifier.width(8.dp))
-                Text(if (confirmedAt == 0L) "Confirm arrival using GPS" else "Recheck location", fontWeight = FontWeight.Medium)
+                Text(
+                    if (confirmedAt == 0L) "Confirm arrival using GPS" else "Recheck location",
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.primary
+                )
             }
 
             AnimatedVisibility(visible = confirmedAt != 0L) {
@@ -297,23 +331,52 @@ private fun SurveyVisit(survey: AssignedSurvey, model: FieldOperations, onBack: 
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                CameraButton(
-                    label = "Take photo",
-                    directory = model.drafts,
-                    enabled = !busy && photos.size < 6 && confirmedAt != 0L,
-                    modifier = Modifier.weight(1f),
-                    onError = { error = it },
-                    onTaken = { attach(listOf(Uri.fromFile(it)), it) }
-                )
+                val cameraEnabled = !busy && photos.size < 6 && confirmedAt != 0L
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(48.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(
+                            if (cameraEnabled) buttonGradientBrush
+                            else Brush.horizontalGradient(listOf(Color(0xFFCCCCCC), Color(0xFF999999)))
+                        )
+                ) {
+                    CameraButton(
+                        label = "Take photo",
+                        directory = model.drafts,
+                        enabled = cameraEnabled,
+                        modifier = Modifier.fillMaxSize(),
+                        onError = { error = it },
+                        onTaken = { attach(listOf(Uri.fromFile(it)), it) }
+                    )
+                }
+
+                val pickerEnabled = !busy && photos.size < 6 && confirmedAt != 0L
                 OutlinedButton(
                     onClick = { picker.launch("image/*") },
-                    enabled = !busy && photos.size < 6 && confirmedAt != 0L,
-                    modifier = Modifier.weight(1f),
-                    shape = RoundedCornerShape(12.dp)
+                    enabled = pickerEnabled,
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(48.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    border = BorderStroke(1.5.dp, if (pickerEnabled) MaterialTheme.colorScheme.primary else Color.Gray.copy(alpha = 0.5f)),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        contentColor = if (pickerEnabled) MaterialTheme.colorScheme.primary else Color.Gray
+                    )
                 ) {
-                    Icon(Icons.Default.AddPhotoAlternate, contentDescription = null, modifier = Modifier.size(18.dp))
+                    Icon(
+                        Icons.Default.AddPhotoAlternate,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp),
+                        tint = if (pickerEnabled) MaterialTheme.colorScheme.primary else Color.Gray
+                    )
                     Spacer(Modifier.width(6.dp))
-                    Text("Select photos")
+                    Text(
+                        "Select photos",
+                        fontWeight = FontWeight.SemiBold,
+                        color = if (pickerEnabled) MaterialTheme.colorScheme.primary else Color.Gray
+                    )
                 }
             }
 
@@ -327,28 +390,42 @@ private fun SurveyVisit(survey: AssignedSurvey, model: FieldOperations, onBack: 
             if (error.isNotBlank()) Text(error, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)
             if (busy) LinearProgressIndicator(Modifier.fillMaxWidth())
 
-            Button(
-                enabled = confirmedAt != 0L && !busy && (notes.isNotBlank() || photos.isNotEmpty()),
-                modifier = Modifier.fillMaxWidth().height(48.dp),
-                shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary
-                ),
-                onClick = {
-                    scope.launch {
-                        busy = true; error = ""
-                        try {
-                            model.submit(survey, surveyFix(context), notes.trim(), photos.map(::File))
-                            photos.forEach { File(it).delete() }
-                            photos = arrayListOf()
-                            onComplete()
-                        } catch (e: Exception) { error = errorText(e); confirmedAt = 0 }
-                        finally { busy = false }
-                    }
-                }
+            val submitEnabled = confirmedAt != 0L && !busy && (notes.isNotBlank() || photos.isNotEmpty())
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(
+                        if (submitEnabled) buttonGradientBrush
+                        else Brush.horizontalGradient(listOf(Color(0xFFCCCCCC), Color(0xFF999999)))
+                    )
             ) {
-                Text("Submit survey", fontWeight = FontWeight.Bold)
+                Button(
+                    enabled = submitEnabled,
+                    modifier = Modifier.fillMaxSize(),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Transparent,
+                        contentColor = Color.White,
+                        disabledContainerColor = Color.Transparent,
+                        disabledContentColor = Color.White.copy(alpha = 0.7f)
+                    ),
+                    onClick = {
+                        scope.launch {
+                            busy = true; error = ""
+                            try {
+                                model.submit(survey, surveyFix(context), notes.trim(), photos.map(::File))
+                                photos.forEach { File(it).delete() }
+                                photos = arrayListOf()
+                                onComplete()
+                            } catch (e: Exception) { error = errorText(e); confirmedAt = 0 }
+                            finally { busy = false }
+                        }
+                    }
+                ) {
+                    Text("Submit survey", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                }
             }
         }
     }
