@@ -21,19 +21,19 @@ class SettingsActivity : AppCompatActivity() {
         @JvmStatic
         fun getLivenessThreshold(context: Context): Float {
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-            return sharedPreferences.getString("liveness_threshold", SettingsActivity.DEFAULT_LIVENESS_THRESHOLD)!!.toFloat()
+            return sharedPreferences.getString("liveness_threshold", DEFAULT_LIVENESS_THRESHOLD)!!.toFloat()
         }
 
         @JvmStatic
         fun getIdentifyThreshold(context: Context): Float {
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-            return sharedPreferences.getString("identify_threshold", SettingsActivity.DEFAULT_IDENTIFY_THRESHOLD)!!.toFloat()
+            return sharedPreferences.getString("identify_threshold", DEFAULT_IDENTIFY_THRESHOLD)!!.toFloat()
         }
 
         @JvmStatic
         fun getCameraLens(context: Context): Int {
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-            val cameraLens = sharedPreferences.getString("camera_lens", SettingsActivity.DEFAULT_CAMERA_LENS)
+            val cameraLens = sharedPreferences.getString("camera_lens", DEFAULT_CAMERA_LENS)
             if(cameraLens == "back") {
                 return CameraSelector.LENS_FACING_BACK
             } else {
@@ -44,7 +44,7 @@ class SettingsActivity : AppCompatActivity() {
         @JvmStatic
         fun getLivenessLevel(context: Context): Int {
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-            val livenessLevel = sharedPreferences.getString("liveness_level", SettingsActivity.DEFAULT_LIVENESS_LEVEL)
+            val livenessLevel = sharedPreferences.getString("liveness_level", DEFAULT_LIVENESS_LEVEL)
             if(livenessLevel == "0") {
                 return 0
             } else {
@@ -111,10 +111,10 @@ class SettingsActivity : AppCompatActivity() {
 
             buttonRestorePref?.setOnPreferenceClickListener {
 
-                cameraLensPref?.value = SettingsActivity.DEFAULT_CAMERA_LENS
-                livenessLevelPref?.value = SettingsActivity.DEFAULT_LIVENESS_LEVEL
-                livenessThresholdPref?.text = SettingsActivity.DEFAULT_LIVENESS_THRESHOLD
-                identifyThresholdPref?.text = SettingsActivity.DEFAULT_IDENTIFY_THRESHOLD
+                cameraLensPref?.value = DEFAULT_CAMERA_LENS
+                livenessLevelPref?.value = DEFAULT_LIVENESS_LEVEL
+                livenessThresholdPref?.text = DEFAULT_LIVENESS_THRESHOLD
+                identifyThresholdPref?.text = DEFAULT_IDENTIFY_THRESHOLD
 
                 Toast.makeText(activity, getString(R.string.restored_default_settings), Toast.LENGTH_LONG).show()
                 true

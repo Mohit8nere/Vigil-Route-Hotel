@@ -26,9 +26,7 @@ object LocationUtils {
      * Works across Android 11 to 16.
      */
     fun isMockLocation(location: Location?): Boolean {
-        if (location == null) return false
-
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        return location != null && if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             // Android 12 (API 31) and above
             location.isMock
         } else {
@@ -82,8 +80,7 @@ object LocationUtils {
 
     @Suppress("DEPRECATION")
     private fun isAppOpsMockLocation(context: Context?): Boolean {
-        if (context == null) return false
-        return try {
+        return context != null && try {
             val appOpsManager = context.getSystemService(Context.APP_OPS_SERVICE) as? AppOpsManager
             val mode = appOpsManager?.checkOpNoThrow(
                 AppOpsManager.OPSTR_MOCK_LOCATION,
@@ -124,10 +121,7 @@ object LocationUtils {
     }
 
     private fun isAccuracyAnomaly(location: Location): Boolean {
-        if (location.hasAccuracy() && location.accuracy == 0.0f && (location.latitude != 0.0 || location.longitude != 0.0)) {
-            return true
-        }
-        return false
+        return location.hasAccuracy() && location.accuracy == 0.0f && (location.latitude != 0.0 || location.longitude != 0.0)
     }
 
     private fun hasFakeGpsAppsInstalled(context: Context?): Boolean {

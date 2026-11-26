@@ -78,9 +78,9 @@ fun RouteListScreen(
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true,
                             colors = TextFieldDefaults.colors(
-                                focusedContainerColor = androidx.compose.ui.graphics.Color.Transparent,
-                                unfocusedContainerColor = androidx.compose.ui.graphics.Color.Transparent,
-                                focusedIndicatorColor = androidx.compose.ui.graphics.Color.White,
+                                focusedContainerColor = Color.Transparent,
+                                unfocusedContainerColor = Color.Transparent,
+                                focusedIndicatorColor = Color.White,
                             )
                         )
                     } else {
@@ -103,8 +103,8 @@ fun RouteListScreen(
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = androidx.compose.ui.graphics.Color.White,
-                    actionIconContentColor = androidx.compose.ui.graphics.Color.White,
+                    titleContentColor = Color.White,
+                    actionIconContentColor = Color.White,
                 ),
             )
         },
@@ -112,7 +112,7 @@ fun RouteListScreen(
             FloatingActionButton(
                 onClick = onAdd,
                 containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = androidx.compose.ui.graphics.Color.White,
+                contentColor = Color.White,
                 shape = androidx.compose.foundation.shape.CircleShape,
             ) { Icon(Icons.Default.Add, "Add Route") }
         },
@@ -211,9 +211,9 @@ fun RouteDetailsScreen(route: PatrolRoute?, onBack: () -> Unit, @Suppress("UNUSE
                 navigationIcon = { IconButton(onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back") } },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = androidx.compose.ui.graphics.Color.White,
-                    navigationIconContentColor = androidx.compose.ui.graphics.Color.White,
-                    actionIconContentColor = androidx.compose.ui.graphics.Color.White,
+                    titleContentColor = Color.White,
+                    navigationIconContentColor = Color.White,
+                    actionIconContentColor = Color.White,
                 ),
             )
         },
@@ -239,7 +239,7 @@ fun RouteDetailsScreen(route: PatrolRoute?, onBack: () -> Unit, @Suppress("UNUSE
             item {
                 Card(
                     shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = androidx.compose.ui.graphics.Color.White),
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
                     border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
                 ) {
                     Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -259,14 +259,14 @@ fun RouteDetailsScreen(route: PatrolRoute?, onBack: () -> Unit, @Suppress("UNUSE
             itemsIndexed(expandedStops, key = { index, (s, visitIndex) -> "${s.id}_${visitIndex}_$index" }) { i, (s, visitIndex) ->
                 Card(
                     shape = RoundedCornerShape(14.dp),
-                    colors = CardDefaults.cardColors(containerColor = androidx.compose.ui.graphics.Color.White),
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
                     border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
                 ) {
                     Row(Modifier.fillMaxWidth().padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
                         Surface(shape = androidx.compose.foundation.shape.CircleShape, color = MaterialTheme.colorScheme.primary) {
                             Text(
                                 "${i + 1}", Modifier.size(28.dp).wrapContentSize(),
-                                color = androidx.compose.ui.graphics.Color.White, fontWeight = FontWeight.Bold,
+                                color = Color.White, fontWeight = FontWeight.Bold,
                             )
                         }
                         Spacer(Modifier.width(12.dp))

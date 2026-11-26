@@ -64,8 +64,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -477,40 +477,53 @@ fun VerificationScreen() {
         }
 
         // TABS: Verification Records, General Scan, Completed Records
-        TabRow(selectedTabIndex = selectedTab) {
-            Tab(
-                selected = selectedTab == 0,
-                enabled = !interactionBlocked,
-                onClick = {
-                    clearScan()
-                    selectedTab = 0
-                    message = ""
-                },
-                text = { Text("Verification Records") }
-            )
-            Tab(
-                selected = selectedTab == 1,
-                enabled = !interactionBlocked,
-                onClick = {
-                    clearScan()
-                    selectedTab = 1
-                    target = null
-                    message = ""
-                    openCamera()
-                },
-                text = { Text("General Scan") }
-            )
-            Tab(
-                selected = selectedTab == 2,
-                enabled = !interactionBlocked,
-                onClick = {
-                    clearScan()
-                    selectedTab = 2
-                    message = ""
-                },
-                text = { Text("Completed") }
-            )
-        }
+        SecondaryTabRow(
+            selectedTab,
+            Modifier,
+            TabRowDefaults.primaryContainerColor,
+            TabRowDefaults.primaryContentColor,
+            @Composable { tabPositions ->
+                if (selectedTab < tabPositions.size) {
+                    TabRowDefaults.SecondaryIndicator(
+                        Modifier.tabIndicatorOffset(tabPositions[selectedTab])
+                    )
+                }
+            },
+            @Composable { HorizontalDivider() },
+            {
+                Tab(
+                    selected = selectedTab == 0,
+                    enabled = !interactionBlocked,
+                    onClick = {
+                        clearScan()
+                        selectedTab = 0
+                        message = ""
+                    },
+                    text = { Text("Verification Records") }
+                )
+                Tab(
+                    selected = selectedTab == 1,
+                    enabled = !interactionBlocked,
+                    onClick = {
+                        clearScan()
+                        selectedTab = 1
+                        target = null
+                        message = ""
+                        openCamera()
+                    },
+                    text = { Text("General Scan") }
+                )
+                Tab(
+                    selected = selectedTab == 2,
+                    enabled = !interactionBlocked,
+                    onClick = {
+                        clearScan()
+                        selectedTab = 2
+                        message = ""
+                    },
+                    text = { Text("Completed") }
+                )
+            })
 
         when (selectedTab) {
             0 -> {

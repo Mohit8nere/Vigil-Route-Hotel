@@ -15,8 +15,7 @@ object SecurityUtils {
      * Checks if the device is rooted by inspecting common su binary paths, Magisk files, and build tags.
      */
     fun isDeviceRooted(): Boolean {
-        if (BuildConfig.DEBUG) return false
-        return checkBuildTags() || checkSuBinaryPaths() || checkMagisk()
+        return !BuildConfig.DEBUG && (checkBuildTags() || checkSuBinaryPaths() || checkMagisk())
     }
 
     private fun checkBuildTags(): Boolean {
@@ -68,8 +67,7 @@ object SecurityUtils {
      * Checks loaded libraries in memory maps and binary artifacts.
      */
     fun isHookingDetected(): Boolean {
-        if (BuildConfig.DEBUG) return false
-        return checkHookingFiles() || checkMemoryMapsForFrida()
+        return !BuildConfig.DEBUG && (checkHookingFiles() || checkMemoryMapsForFrida())
     }
 
     private fun checkHookingFiles(): Boolean {

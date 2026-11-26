@@ -56,7 +56,7 @@ class EvidenceUploadActivity : AppCompatActivity() {
     private val speechLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
+        if (result.resultCode == RESULT_OK) {
             val matches = result.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
             if (!matches.isNullOrEmpty()) {
                 val spokenText = matches[0]
@@ -72,7 +72,7 @@ class EvidenceUploadActivity : AppCompatActivity() {
     private val cameraCaptureLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
+        if (result.resultCode == RESULT_OK) {
             if (!::imageFile.isInitialized || !imageFile.exists()) {
                 Toast.makeText(this, "Image not captured", Toast.LENGTH_SHORT).show()
                 finish()
@@ -415,7 +415,7 @@ class EvidenceUploadActivity : AppCompatActivity() {
         )
 
         Toast.makeText(this, "Evidence saved ✅", Toast.LENGTH_SHORT).show()
-        setResult(Activity.RESULT_OK)
+        setResult(RESULT_OK)
         finish()
     }
 

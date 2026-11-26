@@ -277,8 +277,8 @@ fun TrafficDutyScreen() {
         if (loaded && duties.isEmpty()) item {
             val cardBackgroundBrush = Brush.verticalGradient(
                 colors = listOf(
-                    androidx.compose.ui.graphics.Color(0xFFEAF5F0),
-                    androidx.compose.ui.graphics.Color(0xFFF7FBF9)
+                    Color(0xFFEAF5F0),
+                    Color(0xFFF7FBF9)
                 )
             )
             Card(
@@ -286,11 +286,11 @@ fun TrafficDutyScreen() {
                     .fillMaxWidth()
                     .background(cardBackgroundBrush, RoundedCornerShape(16.dp)),
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = androidx.compose.ui.graphics.Color.Transparent),
+                colors = CardDefaults.cardColors(containerColor = Color.Transparent),
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)),
                 elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
             ) {
-                Box(modifier = Modifier.fillMaxWidth().padding(20.dp), contentAlignment = androidx.compose.ui.Alignment.Center) {
+                Box(modifier = Modifier.fillMaxWidth().padding(20.dp), contentAlignment = Alignment.Center) {
                     Text("No traffic duty has been assigned.", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
@@ -302,8 +302,8 @@ fun TrafficDutyScreen() {
             val isOn = local || (duty.active && !waitingStop)
             val cardBackgroundBrush = Brush.verticalGradient(
                 colors = listOf(
-                    androidx.compose.ui.graphics.Color(0xFFEAF5F0), // lightest greeny tint top
-                    androidx.compose.ui.graphics.Color(0xFFF7FBF9)  // soft light green bottom
+                    Color(0xFFEAF5F0), // lightest greeny tint top
+                    Color(0xFFF7FBF9)  // soft light green bottom
                 )
             )
             Card(
@@ -311,7 +311,7 @@ fun TrafficDutyScreen() {
                     .fillMaxWidth()
                     .background(cardBackgroundBrush, RoundedCornerShape(16.dp)),
                 elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
-                colors = CardDefaults.cardColors(containerColor = androidx.compose.ui.graphics.Color.Transparent),
+                colors = CardDefaults.cardColors(containerColor = Color.Transparent),
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)),
                 shape = RoundedCornerShape(16.dp)
             ) {
@@ -326,7 +326,7 @@ fun TrafficDutyScreen() {
                             duty.label,
                             Modifier.weight(1f),
                             style = MaterialTheme.typography.titleMedium,
-                            fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
+                            fontWeight = Bold
                         )
                         Switch(
                             checked = isOn, enabled = !busy && !waitingStop &&
@@ -381,7 +381,7 @@ fun TrafficDutyScreen() {
             Text(
                 "Control room alerts",
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
+                fontWeight = Bold,
                 color = MaterialTheme.colorScheme.primary
             )
         }
@@ -389,8 +389,8 @@ fun TrafficDutyScreen() {
         if (loaded && alerts.isEmpty()) item {
             val cardBackgroundBrush = Brush.verticalGradient(
                 colors = listOf(
-                    androidx.compose.ui.graphics.Color(0xFFEAF5F0),
-                    androidx.compose.ui.graphics.Color(0xFFF7FBF9)
+                    Color(0xFFEAF5F0),
+                    Color(0xFFF7FBF9)
                 )
             )
             Card(
@@ -398,11 +398,11 @@ fun TrafficDutyScreen() {
                     .fillMaxWidth()
                     .background(cardBackgroundBrush, RoundedCornerShape(16.dp)),
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = androidx.compose.ui.graphics.Color.Transparent),
+                colors = CardDefaults.cardColors(containerColor = Color.Transparent),
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)),
                 elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
             ) {
-                Box(modifier = Modifier.fillMaxWidth().padding(20.dp), contentAlignment = androidx.compose.ui.Alignment.Center) {
+                Box(modifier = Modifier.fillMaxWidth().padding(20.dp), contentAlignment = Alignment.Center) {
                     Text("No traffic alerts.", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
@@ -410,8 +410,8 @@ fun TrafficDutyScreen() {
         items(alerts, key = { "alert-${it.id}" }) { alert ->
             val cardBackgroundBrush = Brush.verticalGradient(
                 colors = listOf(
-                    androidx.compose.ui.graphics.Color(0xFFEAF5F0),
-                    androidx.compose.ui.graphics.Color(0xFFF7FBF9)
+                    Color(0xFFEAF5F0),
+                    Color(0xFFF7FBF9)
                 )
             )
             Card(
@@ -419,7 +419,7 @@ fun TrafficDutyScreen() {
                     .fillMaxWidth()
                     .background(cardBackgroundBrush, RoundedCornerShape(16.dp)),
                 elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
-                colors = CardDefaults.cardColors(containerColor = androidx.compose.ui.graphics.Color.Transparent),
+                colors = CardDefaults.cardColors(containerColor = Color.Transparent),
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)),
                 shape = RoundedCornerShape(16.dp)
             ) {
@@ -432,7 +432,7 @@ fun TrafficDutyScreen() {
                     Text(
                         alert.title,
                         style = MaterialTheme.typography.titleMedium,
-                        fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
+                        fontWeight = Bold
                     )
                     Text(alert.detail, style = MaterialTheme.typography.bodyMedium)
                     alert.congestionMap?.let { url ->

@@ -146,11 +146,8 @@ fun OfficerDashboard(
                     it.badgeId.contains(searchQuery, ignoreCase = true) ||
                     it.officerId.contains(searchQuery, ignoreCase = true))
             val matchesDate = try {
-                if (it.dutyStart.isEmpty()) true 
-                else {
-                    // Simple string comparison for dates in yyyy-MM-dd format
-                    it.dutyStart >= fromDate && it.dutyStart <= toDate
-                }
+                it.dutyStart.isEmpty() || it.dutyStart >= fromDate && it.dutyStart <= toDate
+                // Simple string comparison for dates in yyyy-MM-dd format
             } catch (e: Exception) {
                 true
             }

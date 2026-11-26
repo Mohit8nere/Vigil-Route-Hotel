@@ -17,14 +17,10 @@ class BootReceiver : BroadcastReceiver() {
             if (prefs.isTracking() && prefs.getUserRole().equals("Patrol Officer", ignoreCase = true)) {
                 // On Android 14+ (API 34), starting a location FGS from the background 
                 // requires ACCESS_BACKGROUND_LOCATION permission.
-                val hasBackgroundLocation = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    ContextCompat.checkSelfPermission(
-                        context,
-                        Manifest.permission.ACCESS_BACKGROUND_LOCATION
-                    ) == PackageManager.PERMISSION_GRANTED
-                } else {
-                    true
-                }
+                val hasBackgroundLocation = Build.VERSION.SDK_INT < Build.VERSION_CODES.Q || ContextCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
 
                 if (hasBackgroundLocation) {
                     val serviceIntent = Intent(context, PatrolForegroundService::class.java).apply {

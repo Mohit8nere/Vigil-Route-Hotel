@@ -82,7 +82,7 @@ public class DBManager extends SQLiteOpenHelper {
         Cursor res =  db.rawQuery( "select * from person", null );
         res.moveToFirst();
 
-        while(res.isAfterLast() == false){
+        while(!res.isAfterLast()){
             String name = res.getString(res.getColumnIndex("name"));
             byte[] faceJpg = res.getBlob(res.getColumnIndex("face"));
             byte[] templates = res.getBlob(res.getColumnIndex("templates"));

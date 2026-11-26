@@ -139,7 +139,7 @@ class RoutesActivity : AppCompatActivity() {
         btnLogout.setOnClickListener {
             showLogoutConfirmationDialog()
         }
-        tabLayout.tabMode = com.google.android.material.tabs.TabLayout.MODE_SCROLLABLE
+        tabLayout.tabMode = TabLayout.MODE_SCROLLABLE
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = when (position) {
                 0 -> getString(R.string.current_route)

@@ -30,8 +30,8 @@ public class PersonAdapter extends ArrayAdapter<Person> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_person, parent, false);
         }
 
-        TextView tvName = (TextView) convertView.findViewById(R.id.textName);
-        ImageView faceView = (ImageView) convertView.findViewById(R.id.imageFace);
+        TextView tvName = convertView.findViewById(R.id.textName);
+        ImageView faceView = convertView.findViewById(R.id.imageFace);
         convertView.findViewById(R.id.buttonDelete).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

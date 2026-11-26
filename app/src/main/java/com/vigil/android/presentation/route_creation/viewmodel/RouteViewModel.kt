@@ -48,11 +48,7 @@ class RouteViewModel @Inject constructor(
 
     private fun updateSaveEnabledState() {
         val f = _form.value
-        _isSaveEnabled.value = if (f != null && f.isEdit) {
-            f.stops.any { it.id !in originalStopIds }
-        } else {
-            true
-        }
+        _isSaveEnabled.value = !(f != null && f.isEdit) || f.stops.any { it.id !in originalStopIds }
     }
 
     // null => form band hai
@@ -111,7 +107,7 @@ class RouteViewModel @Inject constructor(
     }
 
     private fun saveDraft(form: RouteFormState?) {
-        val prefs = getApplication<android.app.Application>().getSharedPreferences("route_drafts", android.content.Context.MODE_PRIVATE)
+        val prefs = getApplication<Application>().getSharedPreferences("route_drafts", android.content.Context.MODE_PRIVATE)
         if (form == null || form.isEdit) {
             prefs.edit().remove("draft_route").apply()
         } else {
@@ -128,7 +124,7 @@ class RouteViewModel @Inject constructor(
         val prefs = Prefs(getApplication())
         val defaultThana = prefs.getStationName() ?: ""
 
-        val draftJson = getApplication<android.app.Application>()
+        val draftJson = getApplication<Application>()
             .getSharedPreferences("route_drafts", android.content.Context.MODE_PRIVATE)
             .getString("draft_route", null)
         
@@ -238,7 +234,7 @@ class RouteViewModel @Inject constructor(
 
                 if (success) {
                     // Clear draft on successful save/update
-                    getApplication<android.app.Application>()
+                    getApplication<Application>()
                         .getSharedPreferences("route_drafts", android.content.Context.MODE_PRIVATE)
                         .edit().remove("draft_route").apply()
                     dismissForm()

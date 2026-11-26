@@ -127,7 +127,7 @@ class PatrolForegroundService : Service() {
                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                 )
             }
-            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            val alarmManager = context.getSystemService(ALARM_SERVICE) as AlarmManager
             val triggerTime = System.currentTimeMillis() + 5 * 60 * 1000L // 5 minutes
             try {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !alarmManager.canScheduleExactAlarms()) {
@@ -168,7 +168,7 @@ class PatrolForegroundService : Service() {
                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                 )
             }
-            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            val alarmManager = context.getSystemService(ALARM_SERVICE) as AlarmManager
             try {
                 alarmManager.cancel(pendingIntent)
             } catch (e: Exception) {
@@ -1242,8 +1242,7 @@ class PatrolForegroundService : Service() {
 
 
     private fun isEverythingDone(): Boolean {
-        if (dbHelper.getAllRoutes().isEmpty()) return true
-        return isPatrolCompleted()
+        return dbHelper.getAllRoutes().isEmpty() || isPatrolCompleted()
     }
 
     private fun isPatrolCompleted(): Boolean {
@@ -1642,8 +1641,7 @@ class PatrolForegroundService : Service() {
     }
 
     private fun isFixReliable(loc: Location): Boolean {
-        if (!loc.hasAccuracy()) return false
-        return loc.accuracy <= MAX_ACCEPTABLE_ACCURACY_METERS
+        return loc.hasAccuracy() && loc.accuracy <= MAX_ACCEPTABLE_ACCURACY_METERS
     }
 
     private fun getGeofenceRadius(): Float {

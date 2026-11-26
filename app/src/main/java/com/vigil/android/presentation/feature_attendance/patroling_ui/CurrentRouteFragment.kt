@@ -453,7 +453,7 @@ class CurrentRouteFragment : Fragment() {
                             tvStatus.text = "Time Unverify - Refresh"
                         } else if (isShiftLocked) {
                             tvStatus.visibility = View.VISIBLE
-                            tvStatus.text = ShiftEligibility.ineligibleReason(dutyShift, dutyStart, secureNow!!)
+                            tvStatus.text = ShiftEligibility.ineligibleReason(dutyShift, dutyStart, secureNow)
                         }
 
                         btnUpload.setOnClickListener {
@@ -489,7 +489,7 @@ class CurrentRouteFragment : Fragment() {
                             } else if (isShiftLocked) {
                                 Toast.makeText(
                                     requireContext(),
-                                    ShiftEligibility.ineligibleReason(dutyShift, dutyStart, secureNow!!),
+                                    ShiftEligibility.ineligibleReason(dutyShift, dutyStart, secureNow),
                                     Toast.LENGTH_SHORT
                                 ).show()
                             } else {
@@ -537,11 +537,7 @@ class CurrentRouteFragment : Fragment() {
 
                     val loc = prefs.getLastKnownLocation()
                     val radius = getGeofenceRadius()
-                    val isInside = if (loc != null) {
-                        isInsideGeofence(loc.first, loc.second, lat, lon, radius)
-                    } else {
-                        false
-                    }
+                    val isInside = loc != null && isInsideGeofence(loc.first, loc.second, lat, lon, radius)
                     var frequencyAllowed = true
                     val lastExit = dbHelper.getLastExitByHash(stopHash)
                     if (lastExit != null && freq > 0 && verified) {

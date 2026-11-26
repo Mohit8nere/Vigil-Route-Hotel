@@ -33,13 +33,14 @@ android {
 
     signingConfigs {
         create("release") {
-            val keystoreFile = localProperties.getProperty("signing.storeFilePath")?.let { file(it) }
+            val keystoreFile = localProperties.getProperty("signing.storeFilePath")?.let { rootProject.file(it) }
                 ?: rootProject.file("app/vigil-release.jks").takeIf { it.exists() }
             if (keystoreFile != null) {
                 storeFile = keystoreFile
-                storePassword = localProperties.getProperty("signing.storePassword") ?: "vigil_password"
-                keyAlias = localProperties.getProperty("signing.keyAlias") ?: "vigil_key"
-                keyPassword = localProperties.getProperty("signing.keyPassword") ?: "vigil_password"
+                storePassword = localProperties.getProperty("signing.storePassword")
+                keyAlias = localProperties.getProperty("signing.keyAlias")
+                keyPassword = localProperties.getProperty("signing.keyPassword")
+                storeType = localProperties.getProperty("signing.storeType", "PKCS12")
             }
         }
     }

@@ -28,7 +28,7 @@ class ChatWebSocketManager @Inject constructor(private val api: ChatApiService) 
                         val url = requireNotNull(origin.resolve(path))
                         require(url.host == origin.host && url.port == origin.port && url.scheme == origin.scheme)
                         val done = CompletableDeferred<Unit>()
-                        val allowedOrigin = ticket?.wsOrigin ?: origin.toString().trimEnd('/')
+                        val allowedOrigin = ticket.wsOrigin ?: origin.toString().trimEnd('/')
                         val request = Request.Builder().url(url).header("Origin", allowedOrigin).build()
                         val socket = client.newWebSocket(request, object : WebSocketListener() {
                             override fun onOpen(webSocket: WebSocket, response: Response) = onEvent()
